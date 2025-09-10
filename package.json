@@ -1,25 +1,23 @@
 {
-  "name": "server",
+  "name": "neonsql",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joberDigital/neonSql.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joberDigital/neonSql/issues"
+  },
+  "homepage": "https://github.com/joberDigital/neonSql#readme",
   "description": "",
   "dependencies": {
-    "@neondatabase/serverless": "^1.0.1",
-    "axios": "^1.11.0",
-    "dotenv": "^17.2.2",
-    "express": "^5.1.0",
-    "pg": "^8.16.3"
-  },
-  "devDependencies": {
-    "chai": "^6.0.1",
-    "mocha": "^11.7.2",
-    "sinon": "^21.0.0"
+    "express": "^5.1.0"
   }
 }

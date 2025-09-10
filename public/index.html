@@ -1,17 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Hello Web 🌍 with Node.js + Express!</h1>
-    <input type="text" id="wikipedia-link-input">ingrear 
-    <button id="save-button">click</button>
-    
 
-    <script src="cliente.js">
-    </script>
+<html lang="es">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Creador de Páginas</title>
+ <style>
+ body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f4f4f9;
+  color: #333;
+ }
+
+
+ .container {
+  background-color: #fff;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+ }
+
+
+ h1 {
+  color: #2c3e50;
+  margin-bottom: 0.5em;
+ }
+
+
+ p {
+  color: #7f8c8d;
+  margin-bottom: 1.5em;
+ }
+
+
+ form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+ }
+
+
+ input[type="text"] {
+  padding: 0.8em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+ }
+
+
+ button {
+  padding: 0.8em 1.5em;
+  border: none;
+  border-radius: 4px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+ }
+
+
+ button:hover {
+  background-color: #2980b9;
+ }
+
+
+ #message-area {
+  margin-top: 1.5em;
+  padding: 1em;
+  background-color: #ecf0f1;
+  border-left: 5px solid #bdc3c7;
+  border-radius: 4px;
+  text-align: left;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+ }
+ </style>
+
+</head>
+
+<body>
+
+
+
+<div class="container">
+ <h1>Crea una Nueva Página</h1>
+ <p>Ingresa un título para generar una página usando la API.</p>
+
+
+ <form id="page-form">
+ <input type="text" id="page-title" placeholder="Título de la página" required>
+ <button type="submit">Crear Página</button>
+ </form>
+
+
+ <div id="message-area">
+ <p>Esperando tu acción...</p>
+ </div>
+
+</div>
+
+
+
+<script>
+ const form = document.getElementById('page-form');
+ const pageTitleInput = document.getElementById('page-title');
+ const messageArea = document.getElementById('message-area');
+
+
+ form.addEventListener('submit', async (e) => {
+ e.preventDefault();
+ const pageTitle = pageTitleInput.value;
+ 
+ // Muestra un mensaje de carga
+ messageArea.innerHTML = '<p>Creando página...</p>';
+ 
+ try {
+  const response = await fetch('/api/crear', {
+   method: 'POST',
+   headers: {
+    'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({ pageTitle: pageTitle })
+  });
+
+
+  if (!response.ok) {
+   // Maneja los errores del servidor (ej. 400, 500)
+   const errorData = await response.json();
+   throw new Error(errorData.error || 'Error desconocido');
+  }
+
+
+  const result = await response.json();
+  messageArea.innerHTML = `<p style="color: green;">✅ ${result.message}</p>`;
+
+
+ } catch (error) {
+  messageArea.innerHTML = `<p style="color: red;">❌ Error: ${error.message}</p>`;
+ }
+ });
+
+</script>
+
+
+
 </body>
+
 </html>
