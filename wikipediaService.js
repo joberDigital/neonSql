@@ -1,8 +1,15 @@
 // wikipediaService.js
 
 // ... (imports como axios y neon)
-const { neon } = require('@neondatabase/serverless');
-const sql = neon(process.env.DATABASE_URL); // Conexión a Neon
+//const { neon } = require('@neondatabase/serverless');
+//const sql = neon(process.env.DATABASE_URL); // Conexión a Neon
+
+import { Pool } from 'pg';
+
+const sql = new Pool({
+  connectionString: process.env.DATABASE_URL, // <-- Aquí debe estar el nombre de tu variable
+});
+
 
 // Función para obtener el resumen (código existente)
 async function getArticleSummary(pageTitle) {
@@ -29,7 +36,7 @@ async function saveArticleToNeon({ title, summary, pageUrl }) {
 
 // ... (otras funciones como loadAllLinks, loadLastArticle, etc., que ahora usarían Neon)
 
-module.exports = {
+export  {
     getArticleSummary,
     saveArticleToNeon,
     // ... (otras funciones)
