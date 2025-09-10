@@ -1,161 +1,272 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Creador de Páginas</title>
- <style>
- body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #f4f4f9;
-  color: #333;
- }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
 
+        .container {
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            margin-bottom: 1em;
+        }
 
- .container {
-  background-color: #fff;
-  padding: 2em;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
- }
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 0.5em;
+        }
 
+        p {
+            color: #7f8c8d;
+            margin-bottom: 1.5em;
+        }
 
- h1 {
-  color: #2c3e50;
-  margin-bottom: 0.5em;
- }
+        .section {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 1em;
+            margin-top: 1.5em;
+            text-align: left;
+        }
 
+        .section h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            align-items: flex-start;
+        }
 
- p {
-  color: #7f8c8d;
-  margin-bottom: 1.5em;
- }
+        input[type="text"], input[type="number"] {
+            padding: 0.8em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
+        button {
+            padding: 0.8em 1.5em;
+            border: none;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
- form {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  align-items: center;
- }
+        button:hover {
+            background-color: #2980b9;
+        }
 
-
- input[type="text"] {
-  padding: 0.8em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box;
- }
-
-
- button {
-  padding: 0.8em 1.5em;
-  border: none;
-  border-radius: 4px;
-  background-color: #3498db;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
- }
-
-
- button:hover {
-  background-color: #2980b9;
- }
-
-
- #message-area {
-  margin-top: 1.5em;
-  padding: 1em;
-  background-color: #ecf0f1;
-  border-left: 5px solid #bdc3c7;
-  border-radius: 4px;
-  text-align: left;
-  width: 100%;
-  max-width: 400px;
-  box-sizing: border-box;
- }
- </style>
-
+        #message-area {
+            margin-top: 1.5em;
+            padding: 1em;
+            background-color: #ecf0f1;
+            border-left: 5px solid #bdc3c7;
+            border-radius: 4px;
+            text-align: left;
+        }
+        
+        #item-list {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+        }
+        #item-list li {
+            background-color: #eaf2f8;
+            padding: 0.8em;
+            margin-bottom: 0.5em;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-actions button {
+            background: none;
+            border: none;
+            padding: 0.2em 0.5em;
+            font-size: 0.9em;
+            cursor: pointer;
+            color: #2980b9;
+        }
+    </style>
 </head>
-
 <body>
 
-
-
 <div class="container">
- <h1>Crea una Nueva Página</h1>
- <p>Ingresa un título para generar una página usando la API.</p>
+    <h1>Gestor de API REST</h1>
+    <p>Utiliza los botones para interactuar con la API.</p>
+    
+    <!-- Sección para ver los ítems (GET) -->
+    <div class="section">
+        <h2>Ver Ítems (GET)</h2>
+        <button id="get-all-button">Obtener todos los Ítems</button>
+        <ul id="item-list"></ul>
+    </div>
 
+    <!-- Sección para crear un nuevo ítem (POST) -->
+    <div class="section">
+        <h2>Crear Nuevo Ítem (POST)</h2>
+        <form id="create-form">
+            <input type="text" id="create-title" placeholder="Título del nuevo ítem" required>
+            <button type="submit">Crear</button>
+        </form>
+    </div>
 
- <form id="page-form">
- <input type="text" id="page-title" placeholder="Título de la página" required>
- <button type="submit">Crear Página</button>
- </form>
+    <!-- Sección para actualizar un ítem (PUT) -->
+    <div class="section">
+        <h2>Actualizar Ítem (PUT)</h2>
+        <form id="update-form">
+            <input type="number" id="update-id" placeholder="ID del ítem" required>
+            <input type="text" id="update-title" placeholder="Nuevo título" required>
+            <button type="submit">Actualizar</button>
+        </form>
+    </div>
 
+    <!-- Sección para eliminar un ítem (DELETE) -->
+    <div class="section">
+        <h2>Eliminar Ítem (DELETE)</h2>
+        <form id="delete-form">
+            <input type="number" id="delete-id" placeholder="ID del ítem" required>
+            <button type="submit">Eliminar</button>
+        </form>
+    </div>
 
- <div id="message-area">
- <p>Esperando tu acción...</p>
- </div>
-
+    <div id="message-area">
+        <p>Esperando tu acción...</p>
+    </div>
 </div>
 
-
-
 <script>
- const form = document.getElementById('page-form');
- const pageTitleInput = document.getElementById('page-title');
- const messageArea = document.getElementById('message-area');
+    const messageArea = document.getElementById('message-area');
+    const itemList = document.getElementById('item-list');
 
+    // Función para mostrar mensajes en el área de mensajes
+    const showMessage = (text, color) => {
+        messageArea.innerHTML = `<p style="color: ${color};">✅ ${text}</p>`;
+    };
+    const showError = (text) => {
+        messageArea.innerHTML = `<p style="color: red;">❌ Error: ${text}</p>`;
+    };
 
- form.addEventListener('submit', async (e) => {
- e.preventDefault();
- const pageTitle = pageTitleInput.value;
- 
- // Muestra un mensaje de carga
- messageArea.innerHTML = '<p>Creando página...</p>';
- 
- try {
-  const response = await fetch('/api/crear', {
-   method: 'POST',
-   headers: {
-    'Content-Type': 'application/json'
-   },
-   body: JSON.stringify({ pageTitle: pageTitle })
-  });
+    // Función para renderizar la lista de ítems
+    const renderItems = (items) => {
+        if (!items || items.length === 0) {
+            itemList.innerHTML = '<li>No hay ítems todavía.</li>';
+            return;
+        }
+        itemList.innerHTML = items.map(item => `
+            <li>
+                ID: ${item.id} - ${item.title}
+            </li>
+        `).join('');
+    };
 
+    // --- Manejador GET (Obtener todos los ítems) ---
+    const getAllButton = document.getElementById('get-all-button');
+    getAllButton.addEventListener('click', async () => {
+        messageArea.innerHTML = '<p>Obteniendo ítems...</p>';
+        try {
+            const response = await fetch('/api/data');
+            const data = await response.json();
+            renderItems(data);
+            showMessage('Ítems obtenidos correctamente.', 'green');
+        } catch (error) {
+            showError('Error al obtener los ítems.');
+        }
+    });
 
-  if (!response.ok) {
-   // Maneja los errores del servidor (ej. 400, 500)
-   const errorData = await response.json();
-   throw new Error(errorData.error || 'Error desconocido');
-  }
+    // --- Manejador POST (Crear ítem) ---
+    const createForm = document.getElementById('create-form');
+    createForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('create-title').value;
+        messageArea.innerHTML = '<p>Creando ítem...</p>';
+        try {
+            const response = await fetch('/api/data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'Error al crear');
+            showMessage(result.message, 'green');
+            // Actualizar la lista después de crear
+            getAllButton.click();
+            createForm.reset();
+        } catch (error) {
+            showError(error.message);
+        }
+    });
 
+    // --- Manejador PUT (Actualizar ítem) ---
+    const updateForm = document.getElementById('update-form');
+    updateForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = parseInt(document.getElementById('update-id').value);
+        const title = document.getElementById('update-title').value;
+        messageArea.innerHTML = '<p>Actualizando ítem...</p>';
+        try {
+            const response = await fetch('/api/data', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, title })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'Error al actualizar');
+            showMessage(result.message, 'green');
+            // Actualizar la lista después de actualizar
+            getAllButton.click();
+            updateForm.reset();
+        } catch (error) {
+            showError(error.message);
+        }
+    });
 
-  const result = await response.json();
-  messageArea.innerHTML = `<p style="color: green;">✅ ${result.message}</p>`;
-
-
- } catch (error) {
-  messageArea.innerHTML = `<p style="color: red;">❌ Error: ${error.message}</p>`;
- }
- });
-
+    // --- Manejador DELETE (Eliminar ítem) ---
+    const deleteForm = document.getElementById('delete-form');
+    deleteForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = parseInt(document.getElementById('delete-id').value);
+        messageArea.innerHTML = '<p>Eliminando ítem...</p>';
+        try {
+            const response = await fetch('/api/data', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'Error al eliminar');
+            showMessage(result.message, 'green');
+            // Actualizar la lista después de eliminar
+            getAllButton.click();
+            deleteForm.reset();
+        } catch (error) {
+            showError(error.message);
+        }
+    });
 </script>
-
-
-
 </body>
-
 </html>
