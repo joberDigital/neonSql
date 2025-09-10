@@ -1,15 +1,22 @@
 // server.js
-//Manejará las rutas y las peticiones a la API de Wikipedia
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
 const app = express();
 const PORT = 3000;
 
+// Middleware para que Express pueda leer JSON en el cuerpo de las peticiones
+app.use(express.json()); 
+
 const wikipediaService = require('./wikipediaService');
 
+// Y el resto de tu código...
 app.post('/api/pagina/crear', async (req, res) => {
-    const { pageTitle } = req.body;
+    // Ahora, `req.body` contendrá los datos enviados desde el cliente
+    const { pageTitle } = req.body; 
+
+    // ... (el resto de tu lógica)
+
 
     if (!pageTitle) {
         return res.status(400).json({ error: 'El título de la página es requerido.' });
