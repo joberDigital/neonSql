@@ -1,5 +1,40 @@
 // wikipediaService.js
 
+// 1. Conexión a la base de datos de Neon
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // O NEON_DATABASE_URL
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+// El resto de tu código
+// Por ejemplo, tu función para guardar datos ahora usaría esta conexión:
+async function saveArticleToNeon({ title, summary, pageUrl }) {
+  try {
+    await pool.query(
+      `INSERT INTO articles (title, summary, page_url)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (title) DO UPDATE SET
+       summary = EXCLUDED.summary,
+       page_url = EXCLUDED.page_url;`,
+      [title, summary, pageUrl]
+    );
+    console.log(`Artículo "${title}" guardado/actualizado en la base de datos.`);
+  } catch (error) {
+    console.error('Error al guardar el artículo en Neon:', error);
+    throw error;
+  }
+}
+
+// 2. Exporta las funciones que tu server.js necesita
+module.exports = {
+  getArticleSummary,
+  saveArticleToNeon,
+};// wikipediaService.js
+
 // ... (imports como axios y neon)
 //const { neon } = require('@neondatabase/serverless');
 //const sql = neon(process.env.DATABASE_URL); // Conexión a Neon
@@ -41,3 +76,4 @@ export  {
     saveArticleToNeon,
     // ... (otras funciones)
 };
+
